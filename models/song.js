@@ -9,6 +9,11 @@ SongSchema = new Schema({
   ft: [{ type: Schema.Types.ObjectId, ref: 'Artist' }],
   // for song art
   art: { type: String },
+  index: { type: Number, min: 1 },
+});
+
+SongSchema.virtual('url').get(function () {
+  return `/song/${this._id}`;
 });
 
 module.exports = mongoose.model('Song', SongSchema);

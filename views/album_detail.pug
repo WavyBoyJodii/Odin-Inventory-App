@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  div   #{album.art}
+  p  #{album.title}
+  p #{album.artist.name}
+
+  ul
+    each song in songs
+      li
+        a(href=song.url) #{song.index}  #{song.title} 
+        | each ft in #{song.ft} 
+            (#{ft.name} 
+          #{song.artist.name})
+    else
+      li there are no songs.    

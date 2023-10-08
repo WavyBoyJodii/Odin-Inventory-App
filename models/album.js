@@ -19,5 +19,8 @@ AlbumSchema.virtual('release_date_formatted').get(function () {
     DateTime.DATE_MED
   );
 });
+AlbumSchema.virtual('release_date_yyyy_mm_dd').get(function () {
+  return DateTime.fromJSDate(this.release_date).toISODate(); // format 'YYYY-MM-DD'
+});
 
 module.exports = mongoose.model('Album', AlbumSchema);

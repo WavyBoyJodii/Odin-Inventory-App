@@ -11,7 +11,7 @@ const limiter = RateLimit({
   max: 50,
 });
 require('dotenv').config();
-const mongoUri = process.env.MONGO_URI;
+const mongoUrl = process.env.MONGO_URL;
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -21,7 +21,7 @@ var app = express();
 // connect to mongoDb with mongoose
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', false);
-const mongoDB = mongoUri;
+const mongoDB = mongoUrl;
 main().catch((err) => console.log(err));
 async function main() {
   await mongoose.connect(mongoDB);

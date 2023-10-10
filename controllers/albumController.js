@@ -124,6 +124,27 @@ exports.album_create_post = [
   }),
 ];
 // Display album Delete form
+exports.album_delete_get = asyncHandler(async (req, res, next) => {
+  // Get album for form
+  const [album, songs] = await Promise.all([
+    Album.findById(req.params.id).populate('artist').populate('genre').exec(),
+    Song.find({ album: req.params.id })
+      .populate('artist')
+      .populate('ft')
+      .exec(),
+  ]);
+
+  if (album === null) {
+    // No results.
+    res.redirect('/');
+  }
+  // Render Book delete form with book data
+  res.render('album_delete', {
+    title: 'Delete Album',
+    album: album,
+    songs: songs,
+  });
+});
 
 // Handle album delete form
 

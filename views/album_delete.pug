@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  h1 #{title}: #{album.title}
+  img(src=album.art)
+  p #{album.artist.name}
+
+  ul
+    each song in songs
+      li
+        a(href=song.url) #{song.index}  #{song.title} #{song.artist.name}
+        each ft in song.ft 
+          #{ft.name} 
+        
+    else
+      li there are no songs. 
+
+  p Do you really want to delete this Album?
+
+  form(method='POST' action='')
+    div.form-group
+      input#albumid.form-control(type='hidden',name='albumid', required='true', value=album._id )
+
+    button.btn.btn-primary(type='submit') Delete

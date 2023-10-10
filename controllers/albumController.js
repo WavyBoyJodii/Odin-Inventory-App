@@ -147,7 +147,14 @@ exports.album_delete_get = asyncHandler(async (req, res, next) => {
 });
 
 // Handle album delete form
-
+exports.album_delete_post = asyncHandler(async (req, res, next) => {
+  // Delete object and redirect to the home page.
+  await Promise.all([
+    Album.findByIdAndRemove(req.body.albumid),
+    Song.deleteMany({ album: req.body.albumid }),
+  ]);
+  res.redirect('/');
+});
 // Display album update form
 
 // Handle album update form

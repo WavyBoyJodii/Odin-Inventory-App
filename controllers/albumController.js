@@ -155,6 +155,105 @@ exports.album_delete_post = asyncHandler(async (req, res, next) => {
   ]);
   res.redirect('/');
 });
-// Display album update form
+
+// Display album update form on GET
+exports.album_update_get = asyncHandler(async (req, res, next) => {
+  // Get album, all Artists and Genres for form
+  const [album, allArtists, allGenres] = await Promise.all([
+    Album.findById(req.params.id).populate('artist').exec(),
+    Artist.find().exec(),
+    Genre.find().exec(),
+  ]);
+
+  // Mark selected genres as checked
+  for (const genre of allGenres) {
+    if (album.genre.includes(genre._id)) {
+      genre.checked = 'true';
+    }
+  }
+  res.render('album_form', {
+    title: 'Create Album',
+    artists: allArtists,
+    genres: allGenres,
+    album: album,
+  });
+});
 
 // Handle album update form
+exports.album_update_post = [
+  // Convert the genre to an array.
+  (req, res, next) => {
+    if (!(req.body.genre instanceof Array)) {
+      if (typeof req.body.genre === 'undefined') req.body.genre = [];
+      else req.body.genre = new Array(req.body.genre);
+    }
+    next();
+  },
+
+  // Validate and Sanitize fields
+  body('title', 'Title must not be empty.')
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body('artist', 'Must Choose Artist').trim().isLength({ min: 1 }).escape(),
+  body('release_date', 'Invalid Date')
+    .optional({ values: 'falsy' })
+    .isISO8601()
+    .toDate(),
+  body('genre.*').escape(),
+  body('art', 'No art input')
+    .optional({ values: 'falsy' })
+    .trim()
+    .isURL()
+    .escape(),
+  // Process request after validation and sanitization
+
+  asyncHandler(async (req, res, next) => {
+    //Extract the validation errors from a request
+    const errors = validationResult(req);
+
+    // Create album object with escaped and trimmed data
+    const album = new Album({
+      title: req.body.title,
+      artist: req.body.artist,
+      release_date: req.body.release_date,
+      genre: req.body.genre,
+      art: req.body.art,
+      _id: req.params.id,
+    });
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render form again with sanitized values/error messages.
+
+      // Get all Artists and Genres for form
+      const [allArtists, allGenres] = await Promise.all([
+        Artist.find().exec(),
+        Genre.find().exec(),
+      ]);
+
+      // Mark selected genres as checked
+      for (const genre of allGenres) {
+        if (album.genre.includes(genre._id)) {
+          genre.checked = 'true';
+        }
+      }
+      res.render('album_form', {
+        title: 'Create Album',
+        artists: allArtists,
+        genres: allGenres,
+        album: album,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      // Data from form is valid. Update the record.
+      const updatedAlbum = await Album.findByIdAndUpdate(
+        req.params.id,
+        album,
+        {}
+      );
+      // Redirect to book detail page.
+      res.redirect(updatedAlbum.url);
+    }
+  }),
+];

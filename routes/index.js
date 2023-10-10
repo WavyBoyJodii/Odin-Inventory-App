@@ -20,8 +20,10 @@ router.get('/album/:id/delete', album_controller.album_delete_get);
 router.post('/album/:id/delete', album_controller.album_delete_post);
 
 // GET request for updating an album
+router.get('/album/:id/update', album_controller.album_update_get);
 
 // POST request for updating an album
+router.post('/album/:id/update', album_controller.album_update_post);
 
 // Get request for one Album
 router.get('/album/:id', album_controller.album_detail);

@@ -8,7 +8,7 @@ block content
       label(for='title') Title:
       input#title.form-control(type='text', placeholder='Name of Album' name='title' required='true' value=(undefined===album ? '' : album.title) )
     div.form-group
-      label(for='artist') Author:
+      label(for='artist') Artist:
       select#artist.form-control(type='select', placeholder='Select artist' name='artist' required='true' )
         - artists.sort(function(a, b) {let numA = a.index; let numB = b.index; return (numA < numB) ? -1 : (numA > numB) ? 1 : 0;});
         for artist in artists

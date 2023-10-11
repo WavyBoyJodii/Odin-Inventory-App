@@ -8,7 +8,7 @@ const asyncHandler = require('express-async-handler');
 exports.song_list = asyncHandler(async (req, res, next) => {
   const allSongs = await Song.find()
     .populate('artist')
-    .sort({ 'artist.name': 1 })
+    .sort({ artist: 1 })
     .exec();
   res.render('song_list', {
     title: 'All Songs',
@@ -151,8 +151,8 @@ exports.song_update_get = asyncHandler(async (req, res, next) => {
       .populate('album')
       .populate('ft')
       .exec(),
-    Artist.find({}).exec(),
-    Album.find({}).exec(),
+    Artist.find().exec(),
+    Album.find().exec(),
   ]);
   res.render('song_form', {
     title: 'Update Song',

@@ -41,7 +41,7 @@ exports.song_detail = asyncHandler(async (req, res, next) => {
 exports.song_create_get = asyncHandler(async (req, res, next) => {
   // Find all artists for form
   const [allArtists, allAlbums] = await Promise.all([
-    Artist.find({}).exec,
+    Artist.find({}).exec(),
     Album.find({}).exec(),
   ]);
   res.render('song_form', {
@@ -75,7 +75,7 @@ exports.song_create_post = [
     .trim()
     .isURL()
     .escape(),
-  body('index', 'No index chosen').trim().isNumeric().escape,
+  body('index', 'No index chosen').trim().isNumeric().escape(),
   // Process request after validation and sanitization
 
   asyncHandler(async (req, res, next) => {
@@ -151,7 +151,7 @@ exports.song_update_get = asyncHandler(async (req, res, next) => {
       .populate('album')
       .populate('ft')
       .exec(),
-    Artist.find({}).exec,
+    Artist.find({}).exec(),
     Album.find({}).exec(),
   ]);
   res.render('song_form', {
@@ -163,7 +163,7 @@ exports.song_update_get = asyncHandler(async (req, res, next) => {
 });
 
 // Handle Song Update on POST
-exports.song_create_post = [
+exports.song_update_post = [
   // Convert the features to an array.
   (req, res, next) => {
     if (!(req.body.ft instanceof Array)) {
@@ -186,7 +186,7 @@ exports.song_create_post = [
     .trim()
     .isURL()
     .escape(),
-  body('index', 'No index chosen').trim().isNumeric().escape,
+  body('index', 'No index chosen').trim().isNumeric().escape(),
   // Process request after validation and sanitization
 
   asyncHandler(async (req, res, next) => {

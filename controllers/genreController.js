@@ -114,8 +114,8 @@ exports.genre_delete_get = asyncHandler(async (req, res, next) => {
 exports.genre_delete_post = asyncHandler(async (req, res, next) => {
   // Get details of genre and all associated books (in parallel)
   const [genre, albumsInGenre] = await Promise.all([
-    Genre.findById(req.params.id).exec(),
-    Album.find({ genre: req.params.id }, 'title artist')
+    Genre.findById(req.body.genreid).exec(),
+    Album.find({ genre: req.body.genreid }, 'title artist')
       .populate('artist')
       .exec(),
   ]);

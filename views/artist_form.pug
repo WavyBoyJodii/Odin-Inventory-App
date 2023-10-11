@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  h1 #{title}
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='name') Artist Name:
+      input#name.form-control(type='text', name='name' value=(undefined===artist ? '' : artist.name))
+    div.form-group
+      label(for='bio') Summary:
+      textarea#bio.form-control(type='textarea', placeholder='Bio' name='bio' required='true') #{undefined===artist ? '' : artist.bio}
+    div.form-group
+      label(for='picture') Artwork Url:
+      input#picture.form-control(type='text', placeholder='https://pbs.twimg.com/media/F774sG0XEAA5hcX?format=jpg&name=4096x4096' name='picture' value=(undefined===artist ? '' : artist.picture) )      
+    button.btn.btn-primary(type='submit') Submit
+
+  if errors
+   ul
+    for error in errors
+     li!= error.msg

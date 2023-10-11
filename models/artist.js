@@ -8,4 +8,8 @@ ArtistSchema = new Schema({
   picture: { type: String },
 });
 
+ArtistSchema.virtual('url').get(function () {
+  return `/artist/${this._id}`;
+});
+
 module.exports = mongoose.model('Artist', ArtistSchema);

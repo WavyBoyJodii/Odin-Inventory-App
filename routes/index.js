@@ -4,6 +4,8 @@ var router = express.Router();
 // Require controller modules
 const album_controller = require('../controllers/albumController');
 const genre_controller = require('../controllers/genreController');
+const artist_controller = require('../controllers/artistController');
+const song_controller = require('../controllers/songController');
 
 /* GET home page. */
 router.get('/', album_controller.album_list);
@@ -54,5 +56,31 @@ router.get('/genre/:id', genre_controller.genre_detail);
 
 // GET request for list of all Genre.
 router.get('/genres', genre_controller.genre_list);
+
+/// ARTIST ROUTES ///
+
+// GET request for creating an Artist. NOTE This must come before route that displays Artist (uses id).
+router.get('/artist/create', artist_controller.artist_create_get);
+
+//POST request for creating Artist.
+router.post('/artist/create', artist_controller.artist_create_post);
+
+// GET request to delete Artist.
+router.get('/artist/:id/delete', artist_controller.artist_delete_get);
+
+// POST request to delete Artist.
+router.post('/artist/:id/delete', artist_controller.artist_delete_post);
+
+// GET request to update Artist.
+router.get('/artist/:id/update', artist_controller.artist_update_get);
+
+// POST request to update Artist.
+router.post('/artist/:id/update', artist_controller.artist_update_post);
+
+// GET request for one Artist.
+router.get('/artist/:id', artist_controller.artist_detail);
+
+// GET request for list of all Genre.
+router.get('/artists', artist_controller.artist_list);
 
 module.exports = router;

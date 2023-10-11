@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  img(src=artist.picture)
+  p  #{artist.name}
+  p #{artist.bio}
+
+  h1 Albums
+
+  ul
+    each album in albums
+      li
+        a(href=album.url) #{album.title}
+        
+    else
+      li #{artist.name} has no albums.
+  hr
+  p
+    a(href=artist.url+'/delete') Delete Artist 
+  p
+    a(href=artist.url+'/update') Update Artist      

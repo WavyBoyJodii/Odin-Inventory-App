@@ -87,7 +87,7 @@ exports.artist_delete_get = asyncHandler(async (req, res, next) => {
   // Get details of artist and all associated albums (in parallel)
   const [artist, albumsByArtist] = await Promise.all([
     Artist.findById(req.params.id).exec(),
-    Album.find({ genre: req.params.id }, 'title').exec(),
+    Album.find({ artist: req.params.id }, 'title').exec(),
   ]);
   if (artist === null) {
     // No results.
@@ -178,6 +178,7 @@ exports.artist_update_post = [
         artist,
         {}
       );
+      res.redirect(updatedArtist.url);
     }
   }),
 ];

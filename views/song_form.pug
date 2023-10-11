@@ -1,0 +1,43 @@
+extends layout
+
+block content
+  h1= title
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='title') Title:
+      input#title.form-control(type='text', placeholder='Name of Song' name='title' required='true' value=(undefined===song ? '' : song.title) )
+    div.form-group
+      label(for='artist') Artist:
+      select#artist.form-control(type='select', placeholder='Select artist' name='artist' required='true' )
+        - artists.sort(function(a, b) {let numA = a.index; let numB = b.index; return (numA < numB) ? -1 : (numA > numB) ? 1 : 0;});
+        for artist in artists
+          if song
+            option(value=artist._id selected=(artist._id.toString()===song.artist._id.toString() ? 'selected' : false) ) #{artist.name}
+          else
+            option(value=artist._id) #{artist.name}
+    div.form-group
+      label(for='album') Album:
+      select#album.form-control(type='select', placeholder='Select album' name='album' required='true' )
+        - albums.sort(function(a, b) {let numA = a.index; let numB = b.index; return (numA < numB) ? -1 : (numA > numB) ? 1 : 0;});
+        for album in albums
+          if song
+            option(value=album._id selected=(album._id.toString()===song.album._id.toString() ? 'selected' : false) ) #{album.title}
+          else
+            option(value=album._id) #{album.title}  
+    div.form-group
+      label(for='ft') Featuring Artists:
+      select#ft.form-control(type='select', placeholder='Select Feature' name='ft')
+        - artists.sort(function(a, b) {let numA = a.index; let numB = b.index; return (numA < numB) ? -1 : (numA > numB) ? 1 : 0;});
+        for artist in artists
+          if song
+            option(value=artist._id selected=(artist._id.toString()===song.ft._id.toString() ? 'selected' : false) ) #{artist.name}
+          else
+            option(value=artist._id) #{artist.name}              
+    div.form-group
+      label(for='art') Artwork Url:
+      input#art.form-control(type='text', placeholder='https://pbs.twimg.com/media/F774sG0XEAA5hcX?format=jpg&name=4096x4096' name='art' value=(undefined===album ? '' : album.art) )  
+    div.form-group 
+      label(for='index') Song Order: 
+      input#index.form-control(type='number', name='index', min='1' required='true', value=(undefined===song ? '' : song.index) )       
+    button.btn.btn-primary(type='submit') Submit  

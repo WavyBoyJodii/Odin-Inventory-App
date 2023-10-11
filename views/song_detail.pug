@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  img(src=song.art)
+  p  #{song.title} #{song.artist.name} #{song.album.title}
+
+  hr
+  p
+    a(href=song.url+'/delete') Delete Song
+  p
+    a(href=song.url+'/update') Update Song   
